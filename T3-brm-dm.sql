@@ -101,16 +101,16 @@ insert into job (
            (
                select emp_no
                  from employee
-                where upper(emp_gname) = 'AURELLO'
-                  and upper(emp_fname) = 'BROWN'
-                  and upper(emp_role) = 'T'
+                where upper(trim(emp_gname)) = 'AURELLO'
+                  and upper(trim(emp_fname)) = 'BROWN'
+                  and upper(trim(emp_role)) = 'T'
            ),
            (
                select emp_no
                  from employee
-                where upper(emp_gname) = 'MICHAEL'
-                  and upper(emp_fname) = 'JOHNSON'
-                  and upper(emp_role) = 'D'
+                where upper(trim(emp_gname)) = 'MICHAEL'
+                  and upper(trim(emp_fname)) = 'JOHNSON'
+                  and upper(trim(emp_role)) = 'D'
            ),
            'TRL08',
            '1HGBH41JXMN109186' );
@@ -121,7 +121,8 @@ commit;
 -- Move Victoria Ella's job to 2 PM and apply the agreed 20% increase.
 update job
    set job_pickup_dt = to_date('25/05/2026 14:00','DD/MM/YYYY HH24:MI'),
-       job_intended_dropoff_dt = to_date('25/05/2026 14:00','DD/MM/YYYY HH24:MI') + 5 / 24,
+       job_intended_dropoff_dt = to_date('25/05/2026 14:00','DD/MM/YYYY HH24:MI') + 5 / 24
+       ,
        job_cost = (
            select quote_cost * 1.2
              from quote
@@ -129,15 +130,15 @@ update job
        ),
        job_payment_made = 'Y'
  where quote_no = (
-           select q.quote_no
-             from quote q
-                  join customer c
-                    on q.cust_no = c.cust_no
-            where upper(c.cust_gname) = 'VICTORIA'
-              and upper(c.cust_fname) = 'ELLA'
-              and upper(c.cust_bname) = 'FLINTSTONE STORE'
-              and q.quote_prepared_date = to_date('17/05/2026','DD/MM/YYYY')
-       );
+    select q.quote_no
+      from quote q
+      join customer c
+    on q.cust_no = c.cust_no
+     where upper(c.cust_gname) = 'VICTORIA'
+       and upper(c.cust_fname) = 'ELLA'
+       and upper(c.cust_bname) = 'FLINTSTONE STORE'
+       and q.quote_prepared_date = to_date('17/05/2026','DD/MM/YYYY')
+);
 
 commit;
 
@@ -145,14 +146,14 @@ commit;
 -- Remove the cancelled job while retaining Victoria Ella's quote.
 delete from job
  where quote_no = (
-           select q.quote_no
-             from quote q
-                  join customer c
-                    on q.cust_no = c.cust_no
-            where upper(c.cust_gname) = 'VICTORIA'
-              and upper(c.cust_fname) = 'ELLA'
-              and upper(c.cust_bname) = 'FLINTSTONE STORE'
-              and q.quote_prepared_date = to_date('17/05/2026','DD/MM/YYYY')
-       );
+    select q.quote_no
+      from quote q
+      join customer c
+    on q.cust_no = c.cust_no
+     where upper(c.cust_gname) = 'VICTORIA'
+       and upper(c.cust_fname) = 'ELLA'
+       and upper(c.cust_bname) = 'FLINTSTONE STORE'
+       and q.quote_prepared_date = to_date('17/05/2026','DD/MM/YYYY')
+);
 
 commit;

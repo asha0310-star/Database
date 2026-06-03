@@ -19,7 +19,8 @@ SET LINESIZE 32767
 -- ENSURE that your query is formatted and has a semicolon
 -- (;) at the end of this answer
 
-select json_object(
+select json_arrayagg(
+           json_object(
            '_id' value c.cust_no,
            'customer_name' value trim(trim(c.cust_gname)
                                       || ' ' || trim(c.cust_fname)),
@@ -110,10 +111,12 @@ select json_object(
            ) format json
            returning clob
        )
+       order by c.cust_no
+       returning clob
+   )
   from customer c
  where exists (
            select 1
              from quote q
             where q.cust_no = c.cust_no
-       )
- order by c.cust_no;
+       );

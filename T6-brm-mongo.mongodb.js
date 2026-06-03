@@ -15,7 +15,7 @@
 // with your authcate username
 
 //use("abc001");
-use("YOUR_AUTHCATE");
+use("asha0310");
 
 // (b)
 // PLEASE PLACE REQUIRED MONGODB COMMAND TO CREATE THE COLLECTION HERE

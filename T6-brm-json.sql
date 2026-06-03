@@ -11,6 +11,9 @@
 SET PAGESIZE 100
 SET WRAP OFF
 SET HEADING OFF
+SET LONG 200000
+SET LONGCHUNKSIZE 200000
+SET LINESIZE 32767
 
 -- PLEASE PLACE REQUIRED SQL SELECT STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
@@ -29,7 +32,7 @@ select json_object(
                select json_object(
                           'number_of_quotes' value count(q.quote_no),
                           'number_of_jobs' value count(j.job_no),
-                          'total_paid_jobs' value case
+                          'total_paid_jobcost' value case
                               when sum(
                                   case
                                       when j.job_payment_made = 'Y' then
@@ -48,7 +51,7 @@ select json_object(
                                       'FM$999G999G990D00'
                                   )
                           end,
-                          'total_unpaid_jobs' value case
+                          'total_unpaid_jobcost' value case
                               when sum(
                                   case
                                       when j.job_payment_made = 'N' then
@@ -78,7 +81,10 @@ select json_object(
                select json_arrayagg(
                           json_object(
                               'quote_no' value q.quote_no,
-                              'quote_date' value to_char(q.quote_prepared_date,'DD-Mon-YYYY'),
+                              'quote_prepared_on' value to_char(q.quote_prepared_date,'DD-Mon-YYYY'),
+                              'preferred_start_date' value to_char(q.quote_pref_start_date,'DD-Mon-YYYY'),
+                              'start_location' value trim(q.quote_start_location),
+                              'end_location' value trim(q.quote_end_location),
                               'quote_cost' value to_char(q.quote_cost,'FM$999G999G990D00'),
                               'assigned_to_job' value case
                                   when j.job_no is null then

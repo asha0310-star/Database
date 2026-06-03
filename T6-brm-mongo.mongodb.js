@@ -406,6 +406,31 @@ db.customer_quotes.insertMany(
                 "job_cost": "-"
             }
         ]
+    },
+    {
+        "_id": 18,
+        "customer_name": "Victoria Ella",
+        "customer_business": "Flintstone Store",
+        "customer_address": "94 Henley Beach Road, Adelaide, 5095",
+        "customer_phone": "0401234020",
+        "customer_stats": {
+            "number_of_quotes": 1,
+            "number_of_jobs": 0,
+            "total_paid_jobcost": "-",
+            "total_unpaid_jobcost": "-"
+        },
+        "quotes": [
+            {
+                "quote_no": 300,
+                "quote_prepared_on": "17-May-2026",
+                "preferred_start_date": "25-May-2026",
+                "start_location": "29 Kuranda Road, Adelaide SA 5030",
+                "end_location": "9 Albatros Drive, Mount Gambier SA 5270",
+                "quote_cost": "$1,000.00",
+                "assigned_to_job": "N",
+                "job_cost": "-"
+            }
+        ]
     }
 ]
 );

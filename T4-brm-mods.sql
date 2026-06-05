@@ -14,6 +14,9 @@ In submitting this SQL script, I confirm that this is my own work without coding
 -- The safe order is: add with a default so existing rows are not rejected,
 -- update rows that already have a matching JOB row to 'Y', then make the
 -- column NOT NULL and add a CHECK constraint.
+-- Note: 4(a) alters the live QUOTE table (created in T1), so it has no DROP of
+-- its own; re-running 4(a) requires a freshly rebuilt schema (run
+-- brm-schema-insert.sql -> T1 -> T2 -> T3 -> T4).
 
 -- Step 1: add both new columns; default 'N' prevents NOT NULL violation on existing rows.
 alter table quote add (
@@ -65,6 +68,15 @@ select quote_no,
 -- TRUCK_SERVICE holds one row per service event for a truck.
 -- SERVICE_TASK_TYPE is a lookup table for reusable task categories.
 -- TRUCK_SERVICE_TASK links tasks to a service and records the mechanic and note.
+
+-- Drop new tables first so this section is re-runnable.
+-- Drop child-to-parent order. On a clean schema these raise ORA-00942
+-- (table does not exist); the brief exempts DROP TABLE errors from marking.
+drop table truck_service_task cascade constraints;
+
+drop table service_task_type cascade constraints;
+
+drop table truck_service cascade constraints;
 
 -- Service event: one row per truck per service occasion.
 create table truck_service (

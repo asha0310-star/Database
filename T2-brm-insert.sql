@@ -733,7 +733,8 @@ insert into quote (
 --------------------------------------
 -- Satisfies: 20 jobs, scheduled by dispatchers (emp 3,4), driven by drivers (emp 6,7,8,9)
 -- 10 truck/trailer combinations are used in total.
--- All 10 combinations are used in at least 2 jobs, exceeding the minimum of 5.
+-- 9 combinations are used in at least 2 jobs, exceeding the minimum of 5.
+-- One combination is used in 3 jobs so Task 5(c) displays a High Use case.
 -- Jobs 1-5 and 11-20 have the same actual cost as the quote, represented by NULL job_cost.
 -- Jobs 6-10 have a slightly higher/lower actual cost than the quote.
 -- Sensible dates: pickup on or after preferred start, dropoff after pickup.
@@ -960,7 +961,7 @@ insert into job (
            '2FMDK3GC8BBA12345' );
 
 -- Jobs 11-20: same actual cost as quote, so job_cost is NULL.
--- Re-use the first 10 truck/trailer combinations so each combination appears in 2 jobs.
+-- Re-use truck/trailer combinations to satisfy the Task 5(c) data coverage requirements.
 insert into job (
     job_no,
     job_pickup_dt,
@@ -1178,8 +1179,8 @@ insert into job (
            20,
            4,
            9,
-           'TRL02',
-           '2FMDK3GC8BBA12345' );
+           'TRL03',
+           '3VWFE21C04M000001' );
 
 -- Commit transaction as required
 commit;

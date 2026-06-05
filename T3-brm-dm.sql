@@ -5,7 +5,8 @@
 --Student Name: Abdul Hakim Shaon
 
 /*
-    -- Submission Declaration - must not be removed - removal will result in no marks being awarded --
+-- Submission Declaration - must not be removed - removal will result in no marks being awarded --
+In submitting this SQL script, I confirm that this is my own work without coding assistance from Generative AI
 */
 
 --3(a)
@@ -41,9 +42,9 @@ insert into employee (
            (
                select emp_no
                  from employee
-                where upper(emp_gname) = 'SARAH'
-                  and upper(emp_fname) = 'MITCHELL'
-                  and upper(emp_role) = 'B'
+                where upper(trim(emp_gname)) = 'SARAH'
+                  and upper(trim(emp_fname)) = 'MITCHELL'
+                  and upper(trim(emp_role)) = 'B'
            ) );
 
 commit;
@@ -68,16 +69,16 @@ insert into quote (
            (
                select cust_no
                  from customer
-                where upper(cust_gname) = 'VICTORIA'
-                  and upper(cust_fname) = 'ELLA'
-                  and upper(cust_bname) = 'FLINTSTONE STORE'
+                where upper(trim(cust_gname)) = 'VICTORIA'
+                  and upper(trim(cust_fname)) = 'ELLA'
+                  and upper(trim(cust_bname)) = 'FLINTSTONE STORE'
            ),
            (
                select emp_no
                  from employee
-                where upper(emp_gname) = 'AURELLO'
-                  and upper(emp_fname) = 'BROWN'
-                  and upper(emp_role) = 'T'
+                where upper(trim(emp_gname)) = 'AURELLO'
+                  and upper(trim(emp_fname)) = 'BROWN'
+                  and upper(trim(emp_role)) = 'T'
            ) );
 
 -- Schedule the accepted quote as a five-hour paid job.
@@ -134,9 +135,9 @@ update job
       from quote q
       join customer c
     on q.cust_no = c.cust_no
-     where upper(c.cust_gname) = 'VICTORIA'
-       and upper(c.cust_fname) = 'ELLA'
-       and upper(c.cust_bname) = 'FLINTSTONE STORE'
+     where upper(trim(c.cust_gname)) = 'VICTORIA'
+       and upper(trim(c.cust_fname)) = 'ELLA'
+       and upper(trim(c.cust_bname)) = 'FLINTSTONE STORE'
        and q.quote_prepared_date = to_date('17/05/2026','DD/MM/YYYY')
 );
 
@@ -150,9 +151,9 @@ delete from job
       from quote q
       join customer c
     on q.cust_no = c.cust_no
-     where upper(c.cust_gname) = 'VICTORIA'
-       and upper(c.cust_fname) = 'ELLA'
-       and upper(c.cust_bname) = 'FLINTSTONE STORE'
+     where upper(trim(c.cust_gname)) = 'VICTORIA'
+       and upper(trim(c.cust_fname)) = 'ELLA'
+       and upper(trim(c.cust_bname)) = 'FLINTSTONE STORE'
        and q.quote_prepared_date = to_date('17/05/2026','DD/MM/YYYY')
 );
 

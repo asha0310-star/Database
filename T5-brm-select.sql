@@ -72,7 +72,7 @@ select e.emp_no,
                count(j.job_no)
            else
                null
-       end as scheduled_jobs
+       end as jobs_dispatched
   from employee e
   left outer join employee m
 on e.emp_no_manager = m.emp_no
@@ -93,8 +93,8 @@ on e.emp_no = j.sched_emp_no
 -- The combination table is the base so unused combinations remain in the
 -- output, and CASE classifies use from the grouped job counts.
 select c.truck_vin,
-       t.truck_rego,
-       c.trailer_code,
+       cast(t.truck_rego as varchar2(10)) as truck_rego,
+       cast(c.trailer_code as varchar2(12)) as trailer_code,
        lpad(
            to_char(
                tr.trailer_purchase_cost,
@@ -118,22 +118,24 @@ select c.truck_vin,
                    17
                )
        end as total_quote_cost,
-       case
-           when count(j.job_no) = 0 then
-               'Never Used'
-           when count(j.job_no) > (
-               select avg(used_combo.job_count)
-                 from (
-                   select count(job_no) as job_count
-                     from job
-                    group by truck_vin,
-                             trailer_code
-               ) used_combo
-           )                   then
-               'High Use'
-           else
-               'Standard Use'
-       end as usage_classification
+       cast(
+           case
+               when count(j.job_no) = 0 then
+                   'Never Used'
+               when count(j.job_no) >(
+                   select avg(used_combo.job_count)
+                     from(
+                       select count(job_no) as job_count
+                         from job
+                        group by truck_vin,
+                                 trailer_code
+                   ) used_combo
+               )                   then
+                   'High Use'
+               else
+                   'Standard Use'
+           end
+       as varchar2(20)) as usage_classification
   from combination c
   join truck t
 on c.truck_vin = t.truck_vin

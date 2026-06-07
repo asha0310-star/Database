@@ -67,7 +67,10 @@ alter table employee add constraint employee_licenceno_uk unique ( emp_licenceno
 -- Restrict role to the four valid values
 alter table employee
     add constraint employee_role_ck
-        check ( emp_role in ( 'B','T','M','D' ) );
+        check ( emp_role in ( 'B',
+                              'T',
+                              'M',
+                              'D' ) );
 
 -- Drivers must have a licence number; non-drivers must not have one
 alter table employee
@@ -212,3 +215,6 @@ alter table job
                       truck_vin )
             references combination ( trailer_code,
                                      truck_vin );
+
+alter table job add constraint job_dates_ck check ( job_intended_dropoff_dt >= job_pickup_dt
+);
